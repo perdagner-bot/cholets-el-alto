@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simulador de construcción inteligente Data-Cholets">
+  <title>Data-Cholets | Simulador Inteligente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="Data-Cholets, inicio">
+      <span class="brand-mark" aria-hidden="true">DC</span>
+      <span>Data-Cholets</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="#registro">Registro</a>
+      <a href="#edificio">Edificio</a>
+      <a href="#sensores">Sensores</a>
+      <a href="#multimedia">Multimedia</a>
+    </nav>
+    <div class="live-status"><span class="pulse"></span> Sistema operativo</div>
+  </header>
+
+  <main id="inicio">
+    <!-- Hero Section -->
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Plataforma de construcción inteligente <span>01 / 05</span></p>
+        <h1>Diseña un Cholet que <em>responda</em> a su entorno.</h1>
+        <p class="hero-text">Configura espacios, observa datos en tiempo real y prueba cómo la arquitectura puede aprender de quienes la habitan.</p>
+        <a class="button button-primary" href="#registro">Comenzar simulación <span aria-hidden="true">↘</span></a>
+      </div>
+      <div class="hero-visual" aria-label="Visualización de un edificio inteligente">
+        <div class="building-grid"></div>
+        <div class="building">
+          <div class="building-roof"></div>
+          <div class="building-floor floor-top"><i></i><i></i><i></i></div>
+          <div class="building-floor floor-middle"><i></i><i></i><i></i></div>
+          <div class="building-floor floor-bottom"><i></i><i></i><i></i></div>
+          <div class="building-base"></div>
+        </div>
+        <div class="data-tag tag-energy"><span>ENERGÍA</span><strong id="hero-energy">78%</strong></div>
+        <div class="data-tag tag-air"><span>CALIDAD DEL AIRE</span><strong>BUENA</strong></div>
+        <div class="visual-caption">Latitud 12°02' / Altitud 3.640 m</div>
+      </div>
+    </section>
+
+    <!-- Resumen -->
+    <section class="overview section-shell">
+      <div><span class="metric-label">Proyecto</span><strong>CHL-2026-014</strong></div>
+      <div><span class="metric-label">Estado</span><strong class="accent-text" id="estadoSistema">Sistema listo</strong></div>
+      <div><span class="metric-label">Tiempo activo</span><strong id="segundos">0s</strong></div>
+      <div><span class="metric-label">Última lectura</span><strong id="last-reading">Ahora</strong></div>
+    </section>
+
+    <!-- 01 REGISTRO -->
+    <section class="content-section section-shell" id="registro">
+      <div class="section-heading">
+        <div><p class="eyebrow">01 / Configuración</p><h2>Registro del Cholet</h2></div>
+        <p>Define la identidad del proyecto para que la simulación se adapte a su contexto.</p>
+      </div>
+      <form class="registration-form" id="formCholet">
+        <label>Tu Nombre<input type="text" id="nombre" required></label>
+        <label>Correo Electrónico<input type="email" id="email" required></label>
+        <label>Nombre del Cholet<input type="text" id="nombreCholet" required></label>
+        <label>Piso Principal<input type="number" id="piso" min="1" max="4" value="1" required></label>
+        <label style="grid-column: 1 / -1;">Descripción<textarea id="descripcion" style="width:100%; background:transparent; border:none; border-bottom:1px solid var(--ink);" rows="2" placeholder="Descripción mínima de 10 caracteres..." required></textarea></label>
+        <button class="button button-dark" type="submit" style="grid-column: 1 / -1;">Registrar Cholet <span aria-hidden="true">→</span></button>
+      </form>
+      <div class="form-message" id="mensajeFormulario" role="status"></div>
+    </section>
+
+    <!-- 02 EDIFICIO INTELIGENTE -->
+    <section class="content-section tinted-section" id="edificio">
+      <div class="section-shell">
+        <div class="section-heading">
+          <div><p class="eyebrow">02 / Espacios</p><h2>Edificio Inteligente</h2></div>
+          <p>Selecciona un piso para ver el efecto Pop-up 3D y filtrar sus sensores.</p>
+        </div>
+
+        <!-- Botones de selección -->
+        <div id="controles-pisos" style="margin-bottom: 20px; display:flex; gap:10px;">
+          <button class="button button-dark" data-piso="1">Piso 1: Agua</button>
+          <button class="button button-dark" data-piso="2">Piso 2: Energía</button>
+          <button class="button button-dark" data-piso="3">Piso 3: Seguridad</button>
+          <button class="button button-dark" data-piso="4">Piso 4: Control</button>
+        </div>
+
+        <div id="cholet">
+          <div class="plan-row piso" data-piso="4"><strong>Piso 4</strong><span>Alarma & Bomba de agua</span><b class="status status-ready">Piso Superior</b></div>
+          <div class="plan-row piso" data-piso="3"><strong>Piso 3</strong><span>Cámara & Movimiento</span><b class="status status-ready">Nivel Seguridad</b></div>
+          <div class="plan-row piso" data-piso="2"><strong>Piso 2</strong><span>Panel Solar & Medidor Agua</span><b class="status status-ready">Nivel Energía</b></div>
+          <div class="plan-row piso" data-piso="1"><strong>Piso 1</strong><span>Sensor Lluvia & Humedad</span><b class="status status-ready">Planta Baja</b></div>
+        </div>
+
+        <!-- Flujo de Datos IoT -->
+        <div id="flujoDatos" style="margin-top:20px; font-family:var(--mono); font-size:12px; color:var(--teal);">
+          <span>SENSOR</span> → <span>RED IoT</span> → <span>SERVIDOR</span> → <span>USUARIO</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 SENSORES IoT -->
+    <section class="content-section section-shell" id="sensores">
+      <div class="section-heading">
+        <div><p class="eyebrow">03 / Telemetría</p><h2>Sensores IoT</h2></div>
+        <p>Lecturas generadas dinámicamente desde JavaScript.</p>
+      </div>
+      <!-- Aquí JavaScript insertará los 8 objetos -->
+      <div class="sensor-grid" id="listaSensores"></div>
+    </section>
+
+    <!-- 04 MULTIMEDIA -->
+    <section class="content-section media-section" id="multimedia">
+      <div class="section-shell media-layout">
+        <div class="section-heading">
+          <div><p class="eyebrow">04 / Experiencia</p><h2>Centro Multimedia</h2></div>
+          <p>Control manual de Video y Audio con JavaScript y galería de cholets.</p>
+        </div>
+
+        <div class="media-container">
+          <!-- Reproductor de VIDEO -->
+          <div class="media-player">
+            <video id="videoCholet" width="100%" preload="metadata">
+              <source src="multimedia/Cholets, El Alto, Bolivia (4K).mp4" type="video/mp4">
+              Tu navegador no admite video HTML5.
+            </video>
+          </div>
+          <div class="media-controls">
+            <button class="button button-primary" id="btnPlayVideo" type="button">Reproducir</button>
+            <button class="button button-dark" id="btnPauseVideo" type="button">Pausar</button>
+            <button class="button button-dark" id="btnMuteVideo" type="button">Silenciar</button>
+          </div>
+
+          <!-- Reproductor de AUDIO -->
+          <div class="media-player audio-card">
+            <audio id="audioCholet" preload="metadata">
+              <source src="multimedia/Ciudad del Alto - Los Kjarkas.mp3" type="audio/mpeg">
+              Tu navegador no admite audio HTML5.
+            </audio>
+            <div class="media-controls">
+              <button class="button button-primary" id="btnPlayAudio" type="button">Reproducir</button>
+              <button class="button button-dark" id="btnPauseAudio" type="button">Pausar</button>
+              <button class="button button-dark" id="btnMuteAudio" type="button">Silenciar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Galería / Carrusel de imágenes -->
+        <div class="gallery" id="galeriaCholets">
+          <h3 class="gallery-title">Galería de Cholets</h3>
+          <div class="gallery-viewport">
+            <button class="gallery-arrow gallery-prev" id="btnPrevImg" type="button" aria-label="Imagen anterior">Anterior</button>
+            <figure class="gallery-item">
+              <img id="imagenCholet" src="multimedia/imagen 1.jpeg" alt="Cholet 1 de 5">
+              <figcaption id="pieImagen">Imagen 1 de 5</figcaption>
+            </figure>
+            <button class="gallery-arrow gallery-next" id="btnNextImg" type="button" aria-label="Imagen siguiente">Siguiente</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 SIMULACIÓN -->
+    <section class="simulation-section section-shell" id="simulacion">
+      <div class="simulation-copy">
+        <p class="eyebrow">05 / Laboratorio</p>
+        <h2>Simulación IoT</h2>
+        <p>Activa/Detén el temporizador periódico en tiempo real.</p>
+        <button class="button button-primary" id="btnIniciarSimulacion" type="button">Iniciar Simulación ↗</button>
+        <button class="button button-dark" id="btnDetenerSimulacion" type="button" style="margin-top:10px;">Detener Simulación 🛑</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer section-shell">
+    <span>DATA-CHOLETS / CONSTRUCCIÓN CONSCIENTE</span>
+    <span>Prototipo académico · 2026</span>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
